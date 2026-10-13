@@ -11,9 +11,10 @@ public class SelfCheck {
     private static int count = 0;
 
     public static void main(String[] args) {
-        // исходная проверка из задания
+        // исходная проверка из задания, переработка пересчитана под вариант 4:
+        // при норме 10 часов в строке 9;8;7;10;8 дней с переработкой нет
         check("total and overtime", TimesheetAnalyzer.total(new int[]{8, 8, 8, 8, 8}) == 40
-                && TimesheetAnalyzer.overtimeDays(new int[]{9, 8, 7, 10, 8}) == 2);
+                && TimesheetAnalyzer.overtimeDays(new int[]{9, 8, 7, 10, 8}) == 0);
         checkParse();
         checkCalculations();
         System.out.println("Unit: " + passed + "/" + count + " passed");
@@ -48,10 +49,14 @@ public class SelfCheck {
         check("total", TimesheetAnalyzer.total(week) == 43);
         check("average", TimesheetAnalyzer.average(week) == 8.6);
         check("average zeros", TimesheetAnalyzer.average(new int[]{0, 0, 0, 0, 0}) == 0.0);
-        // граница переработки: 8 часов - нет, 9 - да
-        check("overtime 8", TimesheetAnalyzer.overtimeDays(new int[]{8, 8, 8, 8, 8}) == 0);
-        check("overtime 9", TimesheetAnalyzer.overtimeDays(new int[]{9, 8, 8, 8, 8}) == 1);
-        check("overtime days", TimesheetAnalyzer.overtimeDays(week) == 2);
+        // вариант 4, граница переработки: 10 часов - нет, 11 - да
+        check("overtime 10", TimesheetAnalyzer.overtimeDays(new int[]{10, 10, 10, 10, 10}) == 0);
+        check("overtime 11", TimesheetAnalyzer.overtimeDays(new int[]{11, 10, 8, 8, 8}) == 1);
+        check("overtime days", TimesheetAnalyzer.overtimeDays(new int[]{11, 9, 12, 8, 16}) == 3);
+        // 9 часов по старой норме было переработкой, теперь нет
+        check("overtime 9 not counted", TimesheetAnalyzer.overtimeDays(week) == 0);
+        // недельная норма 40 вариантом не меняется: 10 * 5 = 50, переработка 10 часов
+        check("weekly with norm 10", TimesheetAnalyzer.weeklyOvertime(new int[]{10, 10, 10, 10, 10}) == 10);
         // недельная переработка: 40 - ноль, 41 - один час, меньше 40 - не уходит в минус
         check("weekly 40", TimesheetAnalyzer.weeklyOvertime(new int[]{8, 8, 8, 8, 8}) == 0);
         check("weekly 41", TimesheetAnalyzer.weeklyOvertime(new int[]{9, 8, 8, 8, 8}) == 1);

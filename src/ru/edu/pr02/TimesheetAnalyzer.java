@@ -6,7 +6,10 @@ import java.util.Scanner;
 public class TimesheetAnalyzer {
     private static final int DAYS = 5;
     private static final int MAX_HOURS = 16;
-    private static final int DAILY_NORM = 8;
+    // вариант 4: к норме 8 часов в день применен модификатор +25 %, получается 10 часов
+    private static final int BASE_DAILY_NORM = 8;
+    private static final int NORM_MODIFIER_PERCENT = 25;
+    private static final int DAILY_NORM = BASE_DAILY_NORM * (100 + NORM_MODIFIER_PERCENT) / 100;
     private static final int WEEKLY_NORM = 40;
     private static final Locale RU = Locale.forLanguageTag("ru-RU");
 
